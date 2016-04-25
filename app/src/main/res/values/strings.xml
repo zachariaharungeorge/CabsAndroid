@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">RDXCabs</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login_activity">Login</string>
+    <string name="title_activity_sign_up_activity">Sign Up</string>
+    <string name="title_activity_book_cab_activity">book_cab_activity</string>
+    <string name="title_activity_maps">Map</string>
+    <string-array name="cabTypes">
+        <item>Mini</item>
+        <item>Sedan</item>
+        <item>Sumo</item>
+        <item>XL</item>
+        <item>XT</item>
+        <item>Mini Bus</item>
+    </string-array>
+    <string name="title_activity_menuscreen">menuscreen</string>
+    <string name="title_activity_rate_card">RateCard</string>
+    <string name="title_activity_payment">Payment</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_my_trip_list">MyTripList</string>
+    <string name="title_activity_trip_layout">TripLayout</string>
+</resources>
