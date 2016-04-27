@@ -46,11 +46,6 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />
-
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" >
-        </activity>
         <activity
             android:name=".menuscreen"
             android:label="@string/title_activity_menuscreen" >
@@ -74,6 +69,10 @@
         <activity
             android:name=".TripLayout"
             android:label="@string/title_activity_trip_layout" >
+        </activity>
+        <activity
+            android:name=".TestBook"
+            android:label="@string/title_activity_test_book" >
         </activity>
     </application>
 
