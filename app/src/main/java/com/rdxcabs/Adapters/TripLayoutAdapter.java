@@ -1,4 +1,4 @@
-package rdxcabs.com.rdxcabs;
+package com.rdxcabs.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,7 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.rdxcabs.Beans.TripsBean;
+import com.rdxcabs.R;
+
 import java.util.List;
 
 /**

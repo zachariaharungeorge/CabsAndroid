@@ -1,25 +1,28 @@
-package rdxcabs.com.rdxcabs;
+package com.rdxcabs.UIActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class RateCard extends AppCompatActivity {
+import com.rdxcabs.Constants.Constants;
+import com.rdxcabs.R;
+
+public class TripLayoutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rate_card);
+        setContentView(R.layout.activity_trip_layout);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_rate_card, menu);
+        getMenuInflater().inflate(R.menu.menu_trip_layout, menu);
         return true;
     }
 
@@ -36,11 +39,11 @@ public class RateCard extends AppCompatActivity {
         }
 
         if(id == R.id.signOut){
-            SharedPreferences sp = getSharedPreferences("username", Context.MODE_PRIVATE);
+            SharedPreferences sp = getSharedPreferences(Constants.USERS, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor= sp.edit();
             editor.putString("username",null);
             editor.commit();
-            Intent intent = new Intent(RateCard.this,MainActivity.class);
+            Intent intent = new Intent(TripLayoutActivity.this,MainActivity.class);
             startActivity(intent);
         }
 

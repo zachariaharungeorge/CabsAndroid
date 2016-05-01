@@ -1,9 +1,9 @@
-package rdxcabs.com.rdxcabs;
+package com.rdxcabs.Beans;
 
 /**
  * Created by arung on 17/4/16.
  */
-public class Users {
+public class UserBean {
 
     private String username;
     private String password;
@@ -11,8 +11,16 @@ public class Users {
     private String email;
     private String phoneNumber;
 
-    public Users(){
+    public UserBean(){
 
+    }
+
+    public UserBean(String username, String password, String fullName, String email, String phoneNumber) {
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getUsername(){

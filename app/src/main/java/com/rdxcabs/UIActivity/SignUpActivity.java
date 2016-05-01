@@ -1,4 +1,4 @@
-package rdxcabs.com.rdxcabs;
+package com.rdxcabs.UIActivity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -6,8 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,13 +16,17 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.rdxcabs.Beans.UserBean;
+import com.rdxcabs.Constants.Constants;
+import com.rdxcabs.R;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.firebase.client.Firebase.*;
+import static com.firebase.client.Firebase.CompletionListener;
+import static com.firebase.client.Firebase.setAndroidContext;
 
-public class signUpActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,7 @@ public class signUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final ProgressDialog progressDialog=ProgressDialog.show(signUpActivity.this, "Loading", "Saving Data", false,false);
+                final ProgressDialog progressDialog=ProgressDialog.show(SignUpActivity.this, "Loading", "Saving Data", false,false);
 
                 TextView fullName = (TextView) findViewById(R.id.fullName);
                 TextView phoneNumber = (TextView) findViewById(R.id.phone);
@@ -48,32 +52,25 @@ public class signUpActivity extends AppCompatActivity {
                     //need to alert
                 }
 
-                Firebase myFirebaseRef = new Firebase("https://resplendent-fire-1005.firebaseio.com/Users");
+                Firebase firebaseRegf = new Firebase(Constants.FIREBASE_URL + Constants.URL_SEP + Constants.USERS);
+                final UserBean user = new UserBean(username.getText().toString(), password.getText().toString(), fullName.getText().toString(), email.getText().toString(),phoneNumber.getText().toString());
 
-                final Map<String,String> user = new HashMap<String,String>();
-                user.put("fullName",fullName.getText().toString());
-                user.put("phoneNumber",phoneNumber.getText().toString());
-                user.put("email",email.getText().toString());
-                user.put("username",username.getText().toString());
-                user.put("password", password.getText().toString());
-
-                myFirebaseRef.child(username.getText().toString()).setValue(user, new CompletionListener() {
+                firebaseRegf.child(username.getText().toString()).setValue(user, new CompletionListener() {
 
                     @Override
                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(signUpActivity.this);
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(SignUpActivity.this);
                         alertDialog.setTitle("Sign Up");
                         alertDialog.setCancelable(false);
                         if (firebaseError == null) {
-                            SharedPreferences sharedPreferences = getSharedPreferences("username", Context.MODE_PRIVATE);
+                            SharedPreferences sharedPreferences = getSharedPreferences(Constants.USERS, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor= sharedPreferences.edit();
-                            editor.putString("username",user.get("username"));
-                            editor.commit();
+                            editor.putString("username",user.getUsername()).commit();
                             alertDialog.setMessage("Sign Up Successful");
                             alertDialog.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(signUpActivity.this, menuscreen.class);
+                                    Intent intent = new Intent(SignUpActivity.this, MenuScreenActivity.class);
                                     startActivity(intent);
                                 }
                             });

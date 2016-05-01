@@ -1,14 +1,17 @@
-package rdxcabs.com.rdxcabs;
+package com.rdxcabs.UIActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class Payment extends AppCompatActivity {
+import com.rdxcabs.R;
+
+
+public class PaymentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class Payment extends AppCompatActivity {
             SharedPreferences.Editor editor= sp.edit();
             editor.putString("username",null);
             editor.commit();
-            Intent intent = new Intent(Payment.this,MainActivity.class);
+            Intent intent = new Intent(PaymentActivity.this,MainActivity.class);
             startActivity(intent);
         }
 

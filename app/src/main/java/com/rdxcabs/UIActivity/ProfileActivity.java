@@ -1,11 +1,11 @@
-package rdxcabs.com.rdxcabs;
+package com.rdxcabs.UIActivity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -15,10 +15,11 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.rdxcabs.Beans.UserBean;
+import com.rdxcabs.R;
 
-import org.w3c.dom.Text;
 
-public class Profile extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +31,13 @@ public class Profile extends AppCompatActivity {
         final TextView phone = (TextView) findViewById(R.id.ProfileText3);
         final TextView username = (TextView) findViewById(R.id.ProfileText4);
 
-        final ProgressDialog progressDialog=ProgressDialog.show(Profile.this, "Loading", "Logging in", false,false);
+        final ProgressDialog progressDialog=ProgressDialog.show(ProfileActivity.this, "Loading", "Logging in", false,false);
         Firebase firebaseRef = new Firebase("https://resplendent-fire-1005.firebaseio.com/Users");
         Query query=firebaseRef.orderByChild("username").equalTo(username.getText().toString());
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Users u = dataSnapshot.getValue(Users.class);
+                UserBean u = dataSnapshot.getValue(UserBean.class);
                 fullName.setText(u.getFullName());
                 email.setText(u.getEmail());
                 phone.setText(u.getPhoneNumber());
@@ -91,7 +92,7 @@ public class Profile extends AppCompatActivity {
             SharedPreferences.Editor editor= sp.edit();
             editor.putString("username",null);
             editor.commit();
-            Intent intent = new Intent(Profile.this,MainActivity.class);
+            Intent intent = new Intent(ProfileActivity.this,MainActivity.class);
             startActivity(intent);
         }
 

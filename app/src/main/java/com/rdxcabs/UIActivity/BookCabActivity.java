@@ -1,4 +1,4 @@
-package rdxcabs.com.rdxcabs;
+package com.rdxcabs.UIActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -10,8 +10,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +30,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.rdxcabs.Beans.TripsBean;
+import com.rdxcabs.Constants.Constants;
+import com.rdxcabs.R;
+import com.rdxcabs.Utilities.GPSTracker;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,7 +47,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class bookCabActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+
+public class BookCabActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private GoogleMap mMap;
     private LatLng latLngSource;
@@ -89,7 +94,7 @@ public class bookCabActivity extends AppCompatActivity implements DatePickerDial
         enterDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(bookCabActivity.this,bookCabActivity.this,calYear,calMonth,calDay);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(BookCabActivity.this,BookCabActivity.this,calYear,calMonth,calDay);
                 datePickerDialog.show();
             }
         });
@@ -97,7 +102,7 @@ public class bookCabActivity extends AppCompatActivity implements DatePickerDial
         enterTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(bookCabActivity.this,bookCabActivity.this,calHour,calMinute,true);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(BookCabActivity.this,BookCabActivity.this,calHour,calMinute,true);
                 timePickerDialog.show();
             }
         });
@@ -108,7 +113,7 @@ public class bookCabActivity extends AppCompatActivity implements DatePickerDial
             @Override
             public void onClick(View v) {
 
-                final ProgressDialog progressDialog = ProgressDialog.show(bookCabActivity.this, "Loading", "Booking Cab", false, false);
+                final ProgressDialog progressDialog = ProgressDialog.show(BookCabActivity.this, "Loading", "Booking Cab", false, false);
 
                 try{
                     if(latLngDest != null && latLngSource != null) {
@@ -133,7 +138,7 @@ public class bookCabActivity extends AppCompatActivity implements DatePickerDial
                         }
                         progressDialog.dismiss();
 
-                        AlertDialog.Builder alert = new AlertDialog.Builder(bookCabActivity.this);
+                        AlertDialog.Builder alert = new AlertDialog.Builder(BookCabActivity.this);
                         alert.setTitle("Book Cab");
                         alert.setMessage("Distance: " + distance + "\n" +
                                 "Cab " + cab + "\n" +
@@ -142,11 +147,11 @@ public class bookCabActivity extends AppCompatActivity implements DatePickerDial
                         alert.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                final ProgressDialog progressDialog2 = ProgressDialog.show(bookCabActivity.this, "Loading", "Saving Data", false, false);
-                                Firebase.setAndroidContext(bookCabActivity.this);
-                                Firebase myFirebaseRef = new Firebase("https://resplendent-fire-1005.firebaseio.com/Trips");
+                                final ProgressDialog progressDialog2 = ProgressDialog.show(BookCabActivity.this, "Loading", "Saving Data", false, false);
+                                Firebase.setAndroidContext(BookCabActivity.this);
+                                Firebase myFirebaseRef = new Firebase(Constants.FIREBASE_URL + Constants.URL_SEP + Constants.TRIPS);
 
-                                Geocoder gcd = new Geocoder(bookCabActivity.this, Locale.getDefault());
+                                Geocoder gcd = new Geocoder(BookCabActivity.this, Locale.getDefault());
                                 List<Address> addresses1 = null;
                                 List<Address> addresses2=null;
                                 try {
@@ -156,7 +161,7 @@ public class bookCabActivity extends AppCompatActivity implements DatePickerDial
                                     e.printStackTrace();
                                 }
 
-                                SharedPreferences sp=getSharedPreferences("username", Context.MODE_PRIVATE);
+                                SharedPreferences sp=getSharedPreferences(Constants.USERS, Context.MODE_PRIVATE);
                                 final String username = sp.getString("username","");
 
                                 TripsBean tripDetails = new TripsBean();
@@ -176,27 +181,27 @@ public class bookCabActivity extends AppCompatActivity implements DatePickerDial
                                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                                         progressDialog2.dismiss();
                                         if (firebaseError == null) {
-                                            AlertDialog.Builder alert = new AlertDialog.Builder(bookCabActivity.this);
+                                            AlertDialog.Builder alert = new AlertDialog.Builder(BookCabActivity.this);
                                             alert.setTitle("Book Cab");
                                             alert.setMessage("Cab Booked Successfully");
                                             alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    Intent intent = new Intent(bookCabActivity.this, menuscreen.class);
+                                                    Intent intent = new Intent(BookCabActivity.this, MenuScreenActivity.class);
                                                     startActivity(intent);
                                                 }
                                             });
                                             alert.show();
                                         } else {
-                                            AlertDialog.Builder alert = new AlertDialog.Builder(bookCabActivity.this);
+                                            AlertDialog.Builder alert = new AlertDialog.Builder(BookCabActivity.this);
                                             alert.setTitle("Book Cab");
                                             alert.setMessage("Could not process. Please try again");
                                             alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    Intent intent = new Intent(bookCabActivity.this, bookCabActivity.class);
+                                                    Intent intent = new Intent(BookCabActivity.this, BookCabActivity.class);
                                                     startActivity(intent);
                                                 }
                                             });
@@ -215,14 +220,14 @@ public class bookCabActivity extends AppCompatActivity implements DatePickerDial
                         alert.show();
                     }
                 } catch (Exception e){
-                    AlertDialog.Builder alert = new AlertDialog.Builder(bookCabActivity.this);
+                    AlertDialog.Builder alert = new AlertDialog.Builder(BookCabActivity.this);
                     alert.setTitle("Book Cab");
                     alert.setMessage("Could not process. Please try again");
                     alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(bookCabActivity.this, bookCabActivity.class);
+                            Intent intent = new Intent(BookCabActivity.this, BookCabActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -254,11 +259,11 @@ public class bookCabActivity extends AppCompatActivity implements DatePickerDial
         }
 
         if(id == R.id.signOut){
-            SharedPreferences sp = getSharedPreferences("username", Context.MODE_PRIVATE);
+            SharedPreferences sp = getSharedPreferences(Constants.USERS, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor= sp.edit();
             editor.putString("username",null);
             editor.commit();
-            Intent intent = new Intent(bookCabActivity.this,MainActivity.class);
+            Intent intent = new Intent(BookCabActivity.this,MainActivity.class);
             startActivity(intent);
         }
 
@@ -288,8 +293,8 @@ public class bookCabActivity extends AppCompatActivity implements DatePickerDial
 
         ;
 
-        GPSTracker gps = new GPSTracker(bookCabActivity.this);
-        if(gps.canGetLocation){
+        GPSTracker gps = new GPSTracker(BookCabActivity.this);
+        if(gps.canGetLocation()){
 
             LatLng startPos = new LatLng(gps.getLatitude(),gps.getLongitude());
             LatLng destPos = new LatLng(gps.getLatitude()+.0025D,gps.getLongitude()+.0025D);

@@ -1,16 +1,18 @@
-package rdxcabs.com.rdxcabs;
+package com.rdxcabs.UIActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-public class menuscreen extends AppCompatActivity {
+import com.rdxcabs.R;
+
+public class MenuScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class menuscreen extends AppCompatActivity {
         bookCab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(menuscreen.this,bookCabActivity.class);
+                Intent intent = new Intent(MenuScreenActivity.this,BookCabActivity.class);
                 startActivity(intent);
             }
         });
@@ -48,7 +50,7 @@ public class menuscreen extends AppCompatActivity {
         myTrips.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(menuscreen.this,MyTripList.class);
+                Intent intent=new Intent(MenuScreenActivity.this,TripListActivity.class);
                 startActivity(intent);
             }
         });
@@ -92,7 +94,7 @@ public class menuscreen extends AppCompatActivity {
             SharedPreferences.Editor editor= sp.edit();
             editor.putString("username",null);
             editor.commit();
-            Intent intent = new Intent(menuscreen.this,MainActivity.class);
+            Intent intent = new Intent(MenuScreenActivity.this,MainActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

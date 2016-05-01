@@ -1,28 +1,29 @@
-package rdxcabs.com.rdxcabs;
+package com.rdxcabs.UIActivity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.rdxcabs.Adapters.TripLayoutAdapter;
+import com.rdxcabs.Beans.TripsBean;
+import com.rdxcabs.Constants.Constants;
+import com.rdxcabs.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.firebase.client.Firebase.setAndroidContext;
 
-public class MyTripList extends AppCompatActivity {
+public class TripListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +35,9 @@ public class MyTripList extends AppCompatActivity {
 
         final ProgressDialog progressDialog=ProgressDialog.show(this, "Loading", "Fetching Data", false,false);
         progressDialog.show();
-        Firebase myFirebaseRef = new Firebase("https://resplendent-fire-1005.firebaseio.com/Trips");
+        Firebase myFirebaseRef = new Firebase(Constants.FIREBASE_URL + Constants.URL_SEP + Constants.TRIPS);
 
-        SharedPreferences sp=getSharedPreferences("username", 0);
+        SharedPreferences sp=getSharedPreferences(Constants.USERS, Context.MODE_PRIVATE);
         final String username = sp.getString("username","");
 
         myFirebaseRef.addChildEventListener(new ChildEventListener() {
@@ -47,7 +48,7 @@ public class MyTripList extends AppCompatActivity {
                                                         lst.add(tripsBean);
                                                     }
 
-                                                    TripLayoutAdapter tripLayoutAdapter = new TripLayoutAdapter(MyTripList.this, R.layout.activity_trip_layout, lst);
+                                                    TripLayoutAdapter tripLayoutAdapter = new TripLayoutAdapter(TripListActivity.this, R.layout.activity_trip_layout, lst);
                                                     ListView listView = (ListView) findViewById(R.id.listView);
                                                     listView.setAdapter(tripLayoutAdapter);
                                                     progressDialog.dismiss();
@@ -99,11 +100,11 @@ public class MyTripList extends AppCompatActivity {
         }
 
         if(id == R.id.signOut){
-            SharedPreferences sp = getSharedPreferences("username", Context.MODE_PRIVATE);
+            SharedPreferences sp = getSharedPreferences(Constants.USERS, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor= sp.edit();
             editor.putString("username",null);
             editor.commit();
-            Intent intent = new Intent(MyTripList.this,MainActivity.class);
+            Intent intent = new Intent(TripListActivity.this,MainActivity.class);
             startActivity(intent);
         }
 
